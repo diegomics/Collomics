@@ -1,0 +1,35 @@
+#!/bin/bash
+
+## Full installation (updated from 3.5 to 4.1) ####
+##conda create -n CUTADAPT_env cutadapt
+###################################################
+
+#SBATCH -J cutadapt
+#SBATCH -o ~/stdout/%x.%j.out
+#SBATCH -e ~/stderr/%x.%j.err
+
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=..@zedat.fu-berlin.de
+
+#SBATCH --partition=begendiv,main
+#SBATCH --qos=standard
+#SBATCH --cpus-per-task=24
+#SBATCH --mem=12G
+#SBATCH --time=48:00:00
+
+export PATH=~/Software/anaconda3/bin:$PATH
+source activate CUTADAPT_env
+
+
+## Only change this: ####################################################### 
+FQ_DIR="~/Collomics/genomic_data"
+OUT_DIR="~/Collomics/intermediates/trimmed"
+############################################################################
+
+mkdir -p $OUT_DIR
+
+for i in $(ls $FQ_DIR/*.fq)
+do
+        NAME=$(basename $i .fq)
+cutadapt -j 24 -o $OUT_DIR/$NAME\.trimmed.fastq.gz $i -b ATCTCTCTCAACAACAACAACGGAGGAGGAGGAAAAGAGAGAGAT -b ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT -e 0.1 -O 35 --rc --discard-trimmed
+done
