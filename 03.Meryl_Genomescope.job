@@ -17,7 +17,6 @@
 #SBATCH --mail-user=..@zedat.fu-berlin.de
 
 #SBATCH --partition=begendiv,main
-##SBATCH -w b004
 #SBATCH --qos=standard
 #SBATCH --cpus-per-task=32
 #SBATCH --mem=64G
