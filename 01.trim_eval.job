@@ -13,8 +13,8 @@
 
 #SBATCH --partition=begendiv,main
 #SBATCH --qos=standard
-#SBATCH --cpus-per-task=24
-#SBATCH --mem=12G
+#SBATCH --cpus-per-task=12
+#SBATCH --mem=24G
 #SBATCH --time=48:00:00
 
 export PATH=~/Software/anaconda3/bin:$PATH
@@ -28,11 +28,11 @@ OUT_DIR="~/Collomics/intermediates/trimmed"
 
 mkdir -p $OUT_DIR
 
-seqkit stats ${FQ_DIR}/*.fq.gz -a -b -T | csvtk pretty -t > raw_stats
+seqkit stats ${FQ_DIR}/*.fq.gz -a -b -T | csvtk pretty -t > pre_trim.stats
 
 for i in $(ls ${FQ_DIR}/*.fq.gz)
 do
         NAME=$(basename $i .fq.gz)
-        fastqc -t 24 -o ${OUT_DIR} $i
-        cutadapt -j 24 -o ${OUT_DIR}/${NAME}.trimmed.fq.gz $i -b ATCTCTCTCAACAACAACAACGGAGGAGGAGGAAAAGAGAGAGAT -b ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT -e 0.1 -O 35 --rc --discard-trimmed
+        fastqc -t 12 -o ${OUT_DIR} $i
+        cutadapt -j 12 -o ${OUT_DIR}/${NAME}.trimmed.fq.gz $i -b ATCTCTCTCAACAACAACAACGGAGGAGGAGGAAAAGAGAGAGAT -b ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT -e 0.1 -O 35 --rc --discard-trimmed
 done
