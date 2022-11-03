@@ -26,9 +26,10 @@ FQ_DIR="~/Collomics/genomic_data"
 OUT_DIR="~/Collomics/intermediates/trimmed"
 ############################################################################
 
-mkdir -p $OUT_DIR
+mkdir -p ${OUT_DIR}
+cd ${OUT_DIR}
 
-seqkit stats ${FQ_DIR}/*.fq.gz -a -b -T | csvtk pretty -t > pre_trim.stats
+seqkit stats ${FQ_DIR}/*.fq.gz -a -b -T | csvtk pretty -t > ${OUT_DIR}/pre_trim.stats
 
 for i in $(ls ${FQ_DIR}/*.fq.gz)
 do
