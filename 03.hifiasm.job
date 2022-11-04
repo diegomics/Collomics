@@ -14,7 +14,7 @@
 #SBATCH --partition=begendiv,main
 #SBATCH --qos=standard
 #SBATCH --cpus-per-task=64
-#SBATCH --mem=320G
+#SBATCH --mem=240G
 #SBATCH --time=5-00:00:00 
 
 export PATH="~/Software/anaconda3/bin:${PATH}"
