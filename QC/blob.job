@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#SBATCH -J blob
+#SBATCH -o ../stdout/%x.%j.out
+#SBATCH -e ../stderr/%x.%j.err
+##SBATCH -D 
+
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=..@zedat.fu-berlin.de
+
+#SBATCH --partition=begendiv,main
+#SBATCH --qos=standard
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=24G
+#SBATCH --time=48:00:00
+
+export PATH="../Software/anaconda3/bin:${PATH}"
+source activate BLOB_env
+
+
+BLOB_DIR="../Software/blobtools"
+OUT_DIR="../blob/pri"
+ASM="${OUT_DIR}/..fasta"
+BAM="${OUT_DIR}..bam"
+BLAST="${OUT_DIR}/..blast6"
+
+
+"${BLOB_DIR}/blobtools" create -i $ASM -b $BAM -t $BLAST -o "${OUT_DIR}" --nodes "${BLOB_DIR}/data/nodes.dmp" --names "${BLOB_DIR}/data/names.dmp"
+"${BLOB_DIR}/blobtools" view -i "${OUT_DIR}/collomics_test.blobDB.json"
+"${BLOB_DIR}/blobtools" plot -i "${OUT_DIR}/collomics_test.blobDB.json"
