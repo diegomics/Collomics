@@ -1,3 +1,7 @@
+# INSTALLATION: #################################
+# conda create -n BLOB_env -c bioconda blobtools
+#################################################
+
 #!/bin/bash
 
 #SBATCH -J blob
@@ -18,11 +22,17 @@ export PATH="../Software/anaconda3/bin:${PATH}"
 source activate BLOB_env
 
 
+#needs:
+# reads mapped to the genome
+# genome blasted agains nr database: blastn -db /srv/public/shared/data/nt/nt -query <asm.fa> -outfmt "6 qseqid staxids bitscore std" -max_target_seqs 10 -max_hsps 1 -evalue 1e-25 -num_threads 16 -out <prefix>_nt.blast6
+
+# Only change: ###################
 BLOB_DIR="../Software/blobtools"
 OUT_DIR="../blob/pri"
 ASM="${OUT_DIR}/..fasta"
 BAM="${OUT_DIR}..bam"
 BLAST="${OUT_DIR}/..blast6"
+##################################
 
 
 "${BLOB_DIR}/blobtools" create -i $ASM -b $BAM -t $BLAST -o "${OUT_DIR}" --nodes "${BLOB_DIR}/data/nodes.dmp" --names "${BLOB_DIR}/data/names.dmp"
