@@ -1,1 +1,24 @@
+singularity shell -B ${BIND_DIR}:${BIND_DIR} ../Software/deepconsensus/deepconsensus_1.0.0.sif
 
+for i in {0001..0101}
+do
+
+ccs --min-rq=0.88 \
+-j 16 \
+--chunk="${i}/1000" \
+m64046_220920_112413.subreads.bam \
+"${i}-of-1000.ccs.bam"
+
+actc -j 16 \
+m64046_220920_112413.subreads.bam \
+"${i}-of-1000.ccs.bam" \
+"${i}-of-1000.subreads_to_ccs.bam"
+
+deepconsensus run \
+--subreads_to_ccs="${i}-of-1000.subreads_to_ccs.bam"  \
+--ccs_bam="${i}-of-1000.ccs.bam" \
+--checkpoint=../Software/deepconsensus/models/checkpoint \
+--output="${i}-of-1000.output.fastq" \
+--cpus=16
+
+done
