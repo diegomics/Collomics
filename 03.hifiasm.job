@@ -1,8 +1,6 @@
 #!/bin/bash
 
-## Full installation (hifiasm 0.16.1) ############
-##conda create -n HIFIASM_env -c bioconda hifiasm
-##################################################
+## Using Hifiasm-0.17.4 (r455) beta #############
 
 #SBATCH -J hifiasm
 #SBATCH -o ~/stdout/%x.%j.out
@@ -13,27 +11,45 @@
 
 #SBATCH --partition=begendiv,main
 #SBATCH --qos=standard
-#SBATCH --cpus-per-task=64
+#SBATCH --cpus-per-task=48
 #SBATCH --mem=240G
 #SBATCH --time=5-00:00:00 
 
-export PATH="~/Software/anaconda3/bin:${PATH}"
-source activate HIFIASM_env
+HIFIASM="../Software/hifiasm-r455/hifiasm"
 
 ## Only change this: ############################################
-OUT_DIR="~/Collomics/intermediates/hifiasm_l3"
+OUT_DIR="~/Collomics/intermediates/hifiasm"
 NAME="collomics_BraTor"
 HIFI_DIR="~/Collomics/intermediates/trimmed"
-#HIC_FQ_1="_R1_001.fastq.gz"
-#HIC_FQ_2="_R2_001.fastq.gz"
+MAX_DEPTH=$(cat ../genomescope2/k31/Maximum_depth)
 #################################################################
 
-mkdir -p $OUT_DIR
-cd $OUT_DIR
-hifiasm -o $NAME -t 64 -l3 --primary --purge-max 63 ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}.log
-#-l0 1 2 3
-#awk '/^S/{print ">"$2;print $3}' $NAME\.bp.p_ctg.gfa > $NAME\.c1.fa
-#awk '/^S/{print ">"$2;print $3}' $NAME\.bp.a_ctg.gfa > $NAME\.c2.fa
-#cd ..
-#mv $OUT_DIR/$NAME\.c1.fa .
-#mv $OUT_DIR/$NAME\.c2.fa .
+
+mkdir -p ${OUT_DIR}/${NAME}_l0
+cd ${OUT_DIR}/${NAME}_l0
+$HIFIASM -o ${NAME}_l0 -t 48 -l0 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l0.log
+
+mkdir -p ${OUT_DIR}/${NAME}_l1
+mv ${NAME}_l0.source.bin ${OUT_DIR}/${NAME}_l1/${NAME}_l1.source.bin
+mv ${NAME}_l0.reverse.bin ${OUT_DIR}/${NAME}_l1/${NAME}_l1.reverse.bin
+mv ${NAME}_l0.ec.bin ${OUT_DIR}/${NAME}_l1/${NAME}_l1.ec.bin
+
+cd ${OUT_DIR}/${NAME}_l1
+$HIFIASM -o ${NAME}_l1 -t 48 -l1 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l1.log
+
+mkdir -p ${OUT_DIR}/${NAME}_l2
+mv ${NAME}_l1.source.bin ${OUT_DIR}/${NAME}_l2/${NAME}_l2.source.bin
+mv ${NAME}_l1.reverse.bin ${OUT_DIR}/${NAME}_l2/${NAME}_l2.reverse.bin
+mv ${NAME}_l1.ec.bin ${OUT_DIR}/${NAME}_l2/${NAME}_l2.ec.bin
+
+cd ${OUT_DIR}/${NAME}_l2
+$HIFIASM -o ${NAME}_l2 -t 48 -l2 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l2.log
+
+mkdir -p ${OUT_DIR}/${NAME}_l3
+mv ${NAME}_l2.source.bin ${OUT_DIR}/${NAME}_l3/${NAME}_l3.source.bin
+mv ${NAME}_l2.reverse.bin ${OUT_DIR}/${NAME}_l3/${NAME}_l3.reverse.bin
+mv ${NAME}_l2.ec.bin ${OUT_DIR}/${NAME}_l3/${NAME}_l3.ec.bin
+
+cd ${OUT_DIR}/${NAME}_l3
+$HIFIASM -o ${NAME}_l3 -t 48 -l3 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l3.log
+
