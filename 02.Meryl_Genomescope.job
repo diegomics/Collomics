@@ -30,7 +30,7 @@ GENOMESCOPE2="~/Software/genomescope2.0/genomescope.R"
 
 ## Only change this: ############################################
 FQ_DIR="~/Collomics/intermediates/trimmed"
-OUT_DIR="~/Collomics/evaluation/meryl/k21"
+OUT_DIR="~/Collomics/evaluation/meryl/k31"
 GENOMESCOPE_OUT_DIR="~/Collomics/evaluation/genomescope/k31"
 FINAL_NAME="HiFi_trimmed"
 KMER_VAL="31"
