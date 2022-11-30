@@ -11,7 +11,7 @@
 
 #SBATCH --partition=begendiv,main
 #SBATCH --qos=standard
-#SBATCH --cpus-per-task=48
+#SBATCH --cpus-per-task=24
 #SBATCH --mem=240G
 #SBATCH --time=5-00:00:00 
 
@@ -27,7 +27,7 @@ MAX_DEPTH=$(cat ../genomescope2/k31/Maximum_depth)
 
 mkdir -p ${OUT_DIR}/${NAME}_l0
 cd ${OUT_DIR}/${NAME}_l0
-$HIFIASM -o ${NAME}_l0 -t 48 -l0 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l0.log
+$HIFIASM -o ${NAME}_l0 -t ${SLURM_CPUS_PER_TASK} -l0 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l0.log
 
 mkdir -p ${OUT_DIR}/${NAME}_l1
 mv ${NAME}_l0.ovlp.source.bin ${OUT_DIR}/${NAME}_l1/${NAME}_l1.ovlp.source.bin
@@ -35,7 +35,7 @@ mv ${NAME}_l0.ovlp.reverse.bin ${OUT_DIR}/${NAME}_l1/${NAME}_l1.ovlp.reverse.bin
 mv ${NAME}_l0.ec.bin ${OUT_DIR}/${NAME}_l1/${NAME}_l1.ec.bin
 
 cd ${OUT_DIR}/${NAME}_l1
-$HIFIASM -o ${NAME}_l1 -t 48 -l1 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l1.log
+$HIFIASM -o ${NAME}_l1 -t ${SLURM_CPUS_PER_TASK} -l1 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l1.log
 
 mkdir -p ${OUT_DIR}/${NAME}_l2
 mv ${NAME}_l1.ovlp.source.bin ${OUT_DIR}/${NAME}_l2/${NAME}_l2.ovlp.source.bin
@@ -43,7 +43,7 @@ mv ${NAME}_l1.ovlp.reverse.bin ${OUT_DIR}/${NAME}_l2/${NAME}_l2.ovlp.reverse.bin
 mv ${NAME}_l1.ec.bin ${OUT_DIR}/${NAME}_l2/${NAME}_l2.ec.bin
 
 cd ${OUT_DIR}/${NAME}_l2
-$HIFIASM -o ${NAME}_l2 -t 48 -l2 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l2.log
+$HIFIASM -o ${NAME}_l2 -t ${SLURM_CPUS_PER_TASK} -l2 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l2.log
 
 mkdir -p ${OUT_DIR}/${NAME}_l3
 mv ${NAME}_l2.ovlp.source.bin ${OUT_DIR}/${NAME}_l3/${NAME}_l3.ovlp.source.bin
@@ -51,5 +51,5 @@ mv ${NAME}_l2.ovlp.reverse.bin ${OUT_DIR}/${NAME}_l3/${NAME}_l3.ovlp.reverse.bin
 mv ${NAME}_l2.ec.bin ${OUT_DIR}/${NAME}_l3/${NAME}_l3.ec.bin
 
 cd ${OUT_DIR}/${NAME}_l3
-$HIFIASM -o ${NAME}_l3 -t 48 -l3 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l3.log
+$HIFIASM -o ${NAME}_l3 -t ${SLURM_CPUS_PER_TASK} -l3 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l3.log
 
