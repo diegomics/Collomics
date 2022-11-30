@@ -30,24 +30,24 @@ cd ${OUT_DIR}/${NAME}_l0
 $HIFIASM -o ${NAME}_l0 -t 48 -l0 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l0.log
 
 mkdir -p ${OUT_DIR}/${NAME}_l1
-mv ${NAME}_l0.source.bin ${OUT_DIR}/${NAME}_l1/${NAME}_l1.source.bin
-mv ${NAME}_l0.reverse.bin ${OUT_DIR}/${NAME}_l1/${NAME}_l1.reverse.bin
+mv ${NAME}_l0.ovlp.source.bin ${OUT_DIR}/${NAME}_l1/${NAME}_l1.ovlp.source.bin
+mv ${NAME}_l0.ovlp.reverse.bin ${OUT_DIR}/${NAME}_l1/${NAME}_l1.ovlp.reverse.bin
 mv ${NAME}_l0.ec.bin ${OUT_DIR}/${NAME}_l1/${NAME}_l1.ec.bin
 
 cd ${OUT_DIR}/${NAME}_l1
 $HIFIASM -o ${NAME}_l1 -t 48 -l1 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l1.log
 
 mkdir -p ${OUT_DIR}/${NAME}_l2
-mv ${NAME}_l1.source.bin ${OUT_DIR}/${NAME}_l2/${NAME}_l2.source.bin
-mv ${NAME}_l1.reverse.bin ${OUT_DIR}/${NAME}_l2/${NAME}_l2.reverse.bin
+mv ${NAME}_l1.ovlp.source.bin ${OUT_DIR}/${NAME}_l2/${NAME}_l2.ovlp.source.bin
+mv ${NAME}_l1.ovlp.reverse.bin ${OUT_DIR}/${NAME}_l2/${NAME}_l2.ovlp.reverse.bin
 mv ${NAME}_l1.ec.bin ${OUT_DIR}/${NAME}_l2/${NAME}_l2.ec.bin
 
 cd ${OUT_DIR}/${NAME}_l2
 $HIFIASM -o ${NAME}_l2 -t 48 -l2 --primary --purge-max $MAX_DEPTH ${HIFI_DIR}/*.trimmed.fastq.gz 2> ${NAME}_l2.log
 
 mkdir -p ${OUT_DIR}/${NAME}_l3
-mv ${NAME}_l2.source.bin ${OUT_DIR}/${NAME}_l3/${NAME}_l3.source.bin
-mv ${NAME}_l2.reverse.bin ${OUT_DIR}/${NAME}_l3/${NAME}_l3.reverse.bin
+mv ${NAME}_l2.ovlp.source.bin ${OUT_DIR}/${NAME}_l3/${NAME}_l3.ovlp.source.bin
+mv ${NAME}_l2.ovlp.reverse.bin ${OUT_DIR}/${NAME}_l3/${NAME}_l3.ovlp.reverse.bin
 mv ${NAME}_l2.ec.bin ${OUT_DIR}/${NAME}_l3/${NAME}_l3.ec.bin
 
 cd ${OUT_DIR}/${NAME}_l3
